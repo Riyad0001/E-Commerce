@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-i65&radq#_4o=_t*y4(f4!3tfo-za&f62l&hr%wgqgrtg1w4ix
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://quickmart-cjfa.onrender.com"]
 
 
 # Application definition
