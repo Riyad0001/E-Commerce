@@ -82,16 +82,16 @@ WSGI_APPLICATION = 'QuickMart.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-# Replace the SQLite DATABASES configuration with PostgreSQL:
 DATABASES = {
-    'default': dj_database_url.config(default='postgresql://federal_bank_user:FDcE0Nf1gEK3ERgJ5StVoOrkINRhwyMA@dpg-cte51sdds78s739itclg-a.oregon-postgres.render.com/federal_bank',)
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+# Replace the SQLite DATABASES configuration with PostgreSQL:
+# DATABASES = {
+#     'default': dj_database_url.config(default='postgresql://federal_bank_user:FDcE0Nf1gEK3ERgJ5StVoOrkINRhwyMA@dpg-cte51sdds78s739itclg-a.oregon-postgres.render.com/federal_bank',)
+#     }
 
 
 # Password validation
