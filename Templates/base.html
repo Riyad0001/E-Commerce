@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <title>QuickMart</title>
+    <style>
+      .btn-custom {
+        font-weight: bold;
+        border-radius: 25px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      .btn-success-custom {
+        background-color: #28a745;
+        border-color: #28a745;
+      }
+      .btn-success-custom:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+      }
+
+      .btn-danger-custom {
+        background-color: #dc3545;
+        border-color: #dc3545;
+      }
+      .btn-danger-custom:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+      }
+
+      .btn-warning-custom {
+        background-color: #ffc107;
+        border-color: #ffc107;
+      }
+      .btn-warning-custom:hover {
+        background-color: #e0a800;
+        border-color: #d39e00;
+      }
+
+      .btn-primary-custom {
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+      .btn-primary-custom:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+      }
+
+      .navbar-nav .nav-item a {
+        font-weight: bold;
+        margin-right: 10px;
+        text-decoration: none;
+        color: #343a40;
+        transition: color 0.3s ease;
+      }
+      .navbar-nav .nav-item a:hover {
+        color: #007bff;
+      }
+
+      footer h5 {
+        font-size: 18px;
+        margin-bottom: 15px;
+        font-weight: bold;
+      }
+
+      footer a:hover {
+        color: #ffc107;
+        text-decoration: underline;
+      }
+
+      footer .bi {
+        transition: transform 0.3s ease;
+      }
+
+      footer .bi:hover {
+        transform: scale(1.2);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">QuickMart</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="{% url 'homepage' %}"
+                >Home</a
+              >
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Cart</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#"
+                >Purchase History</a
+              >
+            </li>
+            {% endif %}
+          </ul>
+          <form action="{% url 'search_products' %}" method="get" class="d-flex">
+            <input type="text" name="q" class="form-control me-2" placeholder="Search products..." value="{{ query }}">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </form>
+            {% if user.is_authenticated %}
+            <button class="btn btn-custom btn-success-custom m-1">
+              <a
+                href="{% url 'profile'%}"
+                class="text-white text-decoration-none"
+                >Profile</a
+              >
+            </button>
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-custom btn-danger-custom m-1">LogOut</button>
+            </form>
+            {% else %}
+            <button class="btn btn-custom btn-warning-custom m-1">
+              <a
+                href="{% url 'login' %}"
+                class="text-white text-decoration-none"
+                >LogIn</a
+              >
+            </button>
+            <button class="btn btn-custom btn-primary-custom m-1">
+              <a
+                href="{% url 'signup' %}"
+                class="text-white text-decoration-none"
+                >SignUp</a
+              >
+            </button>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </nav>
+    {% block content %} {% endblock content %}
+    
+    <footer class="bg-dark text-white pt-4 mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <h5>Quick Links</h5>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'homepage' %}" class="text-white text-decoration-none">Home</a></li>
+              <li><a href="#" class="text-white text-decoration-none">Cart</a></li>
+              <li><a href="#" class="text-white text-decoration-none">Purchase History</a></li>
+              <li><a href="#" class="text-white text-decoration-none">Profile</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5>Customer Support</h5>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-white text-decoration-none">Help Center</a></li>
+              <li><a href="#" class="text-white text-decoration-none">FAQs</a></li>
+              <li><a href="#" class="text-white text-decoration-none">Return Policy</a></li>
+              <li><a href="#" class="text-white text-decoration-none">Contact Us</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5>Contact Us</h5>
+            <p><i class="bi bi-telephone-fill me-2"></i>+1 234 567 890</p>
+            <p><i class="bi bi-envelope-fill me-2"></i>support@quickmart.com</p>
+            <p><i class="bi bi-geo-alt-fill me-2"></i>123 QuickMart St, Commerce City</p>
+          </div>
+          <div class="col-md-3">
+            <h5>Follow Us</h5>
+            <a href="#" class="text-white me-2"><i class="bi bi-facebook fs-4"></i></a>
+            <a href="#" class="text-white me-2"><i class="bi bi-twitter fs-4"></i></a>
+            <a href="#" class="text-white me-2"><i class="bi bi-instagram fs-4"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-linkedin fs-4"></i></a>
+          </div>
+        </div>
+        <hr class="my-4 text-white" />
+        <div class="text-center">
+          <p class="mb-0">&copy; 2024 QuickMart. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

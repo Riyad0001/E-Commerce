@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block content %}
+<div class="btn btn-primary m-5">
+  <a href="{% url 'update_profile' %}" class="text-white">Edit Your Profile</a>
+</div>
+<div class="container mt-4">
+  <h1>Your Purchased Products:</h1>
+  <div class="row row-cols-2 row-cols-md-4 g-3">
+    {% for purc in purchases %}
+    <div class="col">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="text-center">
+          {% if purc.product.Image %}
+          <img
+            src="{{ purc.product.Image.url }}"
+            class="card-img-top img-thumbnail"
+            alt="Product Image"
+            style="max-height: 150px; object-fit: contain"
+          />
+          {% else %}
+          <img
+            src="https://via.placeholder.com/150"
+            class="card-img-top img-thumbnail"
+            alt="Placeholder Image"
+            style="max-height: 150px; object-fit: contain"
+          />
+          {% endif %}
+        </div>
+        <div class="card-body text-center">
+          <h6 class="card-title text-truncate" title="{{ purc.product.name }}">
+            {{ purc.product.name }}
+          </h6>
+          <p class="card-text text-muted small mb-1">
+            Price: ${{ purc.product.price }}
+          </p>
+          <p class="card-text text-muted small">
+            Quantity: {{ purc.product.Quantity }}
+          </p>
+          <a href="#" class="btn btn-sm btn-outline-primary mt-1"
+            >View Details</a
+          >
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>You haven't purchased any products yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

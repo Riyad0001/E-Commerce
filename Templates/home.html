@@ -1,0 +1,195 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<!-- Carousel Section -->
+<section class="container banner-container">
+  <div
+    id="carouselExampleIndicators"
+    class="carousel slide"
+    data-bs-ride="carousel"
+    data-bs-interval="2000"
+  >
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="1"
+        aria-label="Slide 2"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="2"
+        aria-label="Slide 3"
+      ></button>
+    </div>
+    <div class="carousel-inner">
+      <!-- First Slide -->
+      <div class="carousel-item active">
+        <img
+          src="{% static 'excited-happy-positive-young-indian-260nw-2103315185.webp' %}"
+          class="d-block w-100 carousel-img"
+          alt="First Slide"
+        />
+        <div class="carousel-caption d-flex flex-column align-items-center">
+          <h3>Buy, Enjoy, and Explore</h3>
+          <a href="#" class="btn btn-primary mt-3">Shop Now</a>
+        </div>
+      </div>
+      <!-- Second Slide -->
+      <div class="carousel-item">
+        <img
+          src="{% static 'photo-1552879948-16c32e175ae5.avif' %}"
+          class="d-block w-100 carousel-img"
+          alt="Second Slide"
+        />
+        <div class="carousel-caption d-flex flex-column align-items-center">
+          <h3>Shop the Best Deals</h3>
+          <a href="#" class="btn btn-primary mt-3">Explore More</a>
+        </div>
+      </div>
+      <!-- Third Slide -->
+      <div class="carousel-item">
+        <img
+          src="{% static 'premium_photo-1670514095985-fc253f2e86c6.avif' %}"
+          class="d-block w-100 carousel-img"
+          alt="Third Slide"
+        />
+        <div class="carousel-caption d-flex flex-column align-items-center">
+          <h3>Experience Quality</h3>
+          <a href="#" class="btn btn-primary mt-3">Discover Now</a>
+        </div>
+      </div>
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</section>
+
+<!-- Filter and Sort Section -->
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Filter by Catagory</h3>
+      <div class="btn-group">
+        {% for dat in brand %}
+        <a
+          href="{% url 'brand_wise_car' dat.slug %}"
+          class="btn btn-outline-primary"
+          >{{ dat.name }}</a
+        >
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-md-6 text-end">
+      <h3>Sort by</h3>
+      <select class="form-select" onchange="sortProducts(this)">
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="name-asc">Name: A to Z</option>
+        <option value="name-desc">Name: Z to A</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Products Section -->
+<div class="container mt-5">
+  <h2 class="mb-4">Total Products Found: {{ data|length }}</h2>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for car in data %}
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        {% if car.Image %}
+        <img
+          src="{{ car.Image.url }}"
+          class="card-img-top"
+          alt="{{ car.name }}"
+        />
+        {% else %}
+        <img
+          src="{% static 'header.jpg' %}"
+          class="card-img-top"
+          alt="Default Image"
+        />
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ car.name }}</h5>
+          <p class="card-text">
+            <strong>Price:</strong> ${{ car.price }}<br />
+            <strong>Available:</strong> {{ car.Quantity }} in stock
+          </p>
+          <span class="badge bg-primary">{{ car.Brand.name }}</span>
+        </div>
+        <div class="card-footer">
+          <a
+            href="{% url 'post_detail' car.id %}"
+            class="btn btn-warning w-100 text-white"
+            >View Details</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  /* Carousel Styling */
+  .carousel-img {
+    height: 80vh;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    .carousel-img {
+      height: 50vh;
+    }
+  }
+
+  /* Card Styling */
+  .card-img-top {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .card:hover {
+    transform: scale(1.02);
+    transition: 0.3s ease-in-out;
+  }
+
+  .badge {
+    font-size: 0.9rem;
+    padding: 5px 10px;
+  }
+
+  .container {
+    padding-top: 20px;
+    padding-bottom: 40px;
+  }
+</style>
+
+{% endblock content %}

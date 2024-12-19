@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Search Results for "{{ query }}"</h1>
+
+{% if results %}
+    <div class="d-flex overflow-auto" style="gap: 10px; padding: 10px;">
+        {% for product in results %}
+            <div class="card" style="width: 200px; flex-shrink: 0;">
+                {% if product.Image %}
+                    <img src="{{ product.Image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 150px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body text-center">
+                    <h6 class="card-title" style="font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ product.name }}</h6>
+                    <p class="card-text text-muted" style="font-size: 13px;">${{ product.price }}</p>
+                    <a href="{% url 'post_detail' product.id %}" class="btn btn-sm btn-primary">View</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No products found matching your search.</p>
+{% endif %}
+{% endblock %}

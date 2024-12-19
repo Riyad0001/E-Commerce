@@ -1,0 +1,132 @@
+{% extends "base.html" %} {% load crispy_forms_tags %} {% block content %}
+
+<div class="container my-5">
+  <div class="row align-items-center">
+    <!-- Product Image Section -->
+    <div class="col-md-6 text-center">
+      <img
+        src="{{ car.Image.url }}"
+        alt="{{ car.name }}"
+        class="img-fluid rounded shadow-lg"
+        style="max-height: 500px; object-fit: cover; width: 100%"
+      />
+    </div>
+
+    <!-- Product Information Section -->
+    <div class="col-md-6">
+      <h1 class="fw-bold text-primary display-4">{{ car.name }}</h1>
+      <h2 class="text-success mt-3">Price: ${{ car.price }}</h2>
+      <h3 class="text-muted">Stock: {{ car.Quantity }}</h3>
+      <p class="mt-4 fs-5" style="text-align: justify">{{ car.Description }}</p>
+      <div class="mt-4">
+        <span class="badge bg-primary fs-5 p-2"
+          >Catagory: {{ car.Brand.name }}</span
+        >
+      </div>
+      <!-- Action Buttons -->
+      <div class="mt-4">
+        {% if user.is_authenticated %} {% if car.Quantity > 0 %}
+        <a href="{% url 'buy_now' car.id %}" class="btn btn-warning btn-lg me-2"
+          >Buy Now</a
+        >
+        <a href="#" class="btn btn-outline-primary btn-lg">Add to Cart</a>
+        {% else %}
+        <button class="btn btn-secondary btn-lg" disabled>Out of Stock</button>
+        {% endif %} {% else %}
+        <p class="mt-3">
+          Please
+          <a href="{% url 'login' %}" class="text-primary text-decoration-none"
+            >Login</a
+          >
+          or
+          <a href="{% url 'signup' %}" class="text-primary text-decoration-none"
+            >Sign Up</a
+          >
+          to purchase this product.
+        </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reviews Section -->
+<div class="container mt-5">
+  <div class="card bg-light shadow-sm">
+    <div class="card-body">
+      <h3 class="text-primary">Customer Reviews ({{ comments|length }})</h3>
+      {% for comment in comments %}
+      <div class="card my-3">
+        <div class="card-body">
+          <h6 class="card-title">
+            <strong class="text-primary">{{ comment.name }}</strong>
+            <small class="text-muted"
+              >• {{ comment.created_on|date:"F j, Y, g:i a" }}</small
+            >
+          </h6>
+          <p class="card-text">{{ comment.body }}</p>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-muted">
+        No reviews yet. Be the first to review this product!
+      </p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Review Form -->
+  {% if user.is_authenticated %}
+  <div class="mt-4">
+    <h4 class="mb-3">Leave a Review</h4>
+    <form method="post" class="shadow-sm p-4 bg-white rounded">
+      {% csrf_token %} {{ comments_form|crispy }}
+      <button type="submit" class="btn btn-warning">Submit Review</button>
+    </form>
+  </div>
+  {% else %}
+  <p class="mt-4">
+    Please
+    <a href="{% url 'login' %}" class="text-primary text-decoration-none"
+      >Login</a
+    >
+    or
+    <a href="{% url 'signup' %}" class="text-primary text-decoration-none"
+      >Sign Up</a
+    >
+    to leave a review.
+  </p>
+  {% endif %}
+</div>
+
+<!-- Related Products Section -->
+{% comment %}
+<div class="container my-5">
+  <h3 class="text-primary mb-4">You May Also Like</h3>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for related_car in related_products %}
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img
+          src="{{ related_car.Image.url }}"
+          alt="{{ related_car.name }}"
+          class="card-img-top"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ related_car.name }}</h5>
+          <p class="text-muted">Price: ${{ related_car.price }}</p>
+        </div>
+        <div class="card-footer">
+          <a
+            href="{% url 'product_detail' related_car.id %}"
+            class="btn btn-primary w-100"
+            >View Details</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endcomment %} {% endblock content %}
